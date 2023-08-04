@@ -71,7 +71,7 @@ def output_csvfile(data: dict, file_name: str, title: list):
 
     # 将数据写入 csv 文件
     import csv
-    with open(file_name, 'w', encoding='utf-8', newline='') as f:
+    with open(file_name, 'w', encoding='utf-8-sig', newline='') as f:
         writer = csv.DictWriter(f, title)
         writer.writeheader()
         for row in csv_data:
