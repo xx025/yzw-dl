@@ -1,3 +1,4 @@
+import csv
 import json
 
 
@@ -49,12 +50,9 @@ def output_jsonfile(data: dict, file_name: str):
         json.dump(data, f, ensure_ascii=False, indent=4)
 
 
-def output_csvfile(data: dict, file_name: str, title: list):
-    """
-    输出到 csv 文件
-    会从 data 中提取 title 中的字段
-    """
+def json_data_to_list_data(json_data):
     csv_data = []
+    data = json_data
 
     for csh_name, sch_val in data.items():
         ch1 = sch_val.copy()
@@ -68,11 +66,41 @@ def output_csvfile(data: dict, file_name: str, title: list):
                 ch4 = ch2.copy()
                 ch4.update(kskm)
                 csv_data.append(ch4)
+    return csv_data
 
+
+def json_file_to_list_data(json_file: str):
+    with open(json_file, 'r', encoding='utf-8') as f:
+        json_data = json.load(f)
+    csv_data = json_data_to_list_data(json_data)
+    return csv_data
+
+
+def csv_data_output(csv_data: list, csv_path: str, csv_title: list = None):
     # 将数据写入 csv 文件
-    import csv
-    with open(file_name, 'w', encoding='utf-8-sig', newline='') as f:
-        writer = csv.DictWriter(f, title)
+
+    if not csv_title:
+        # 如果没有指定 title，则使用默认值
+        csv_title = ["id", "招生单位", "所在地", "院系所", "专业", '学习方式', "研究方向", "拟招人数", "政治",
+                     "外语", "业务课一", "业务课二", "考试方式", "指导老师", '备注']
+
+    with open(csv_path, 'w', encoding='utf-8-sig', newline='') as f:
+        writer = csv.DictWriter(f, csv_title)
         writer.writeheader()
         for row in csv_data:
-            writer.writerow({i: row.get(i) for i in title})
+            writer.writerow({i: row.get(i) for i in csv_title})
+
+
+def json_file_scv_output(json_file: str, csv_path: str, csv_title: list = None):
+    # 将 json 文件转换为 csv 文件
+    csv_data = json_file_to_list_data(json_file)
+    csv_data_output(csv_data, csv_path, csv_title)
+
+
+def output_csvfile(data: dict, file_name: str, title: list = None):
+    """
+    输出到 csv 文件
+    会从 data 中提取 title 中的字段
+    """
+    csv_data = json_data_to_list_data(data)
+    csv_data_output(csv_data, file_name, title)
