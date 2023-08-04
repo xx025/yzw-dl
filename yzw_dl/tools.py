@@ -79,6 +79,14 @@ def json_file_to_list_data(json_file: str):
 def csv_data_output(csv_data: list, csv_path: str, csv_title: list = None):
     # 将数据写入 csv 文件
 
+    def deduplicate_list_of_dicts(input_list):
+        # 列表去重
+        unique_set = set(tuple(sorted(d.items())) for d in input_list)
+        deduplicated_list = [dict(item) for item in unique_set]
+        return deduplicated_list
+
+    csv_data = deduplicate_list_of_dicts(csv_data)
+
     if not csv_title:
         # 如果没有指定 title，则使用默认值
         csv_title = ["id", "招生单位", "所在地", "院系所", "专业", '学习方式', "研究方向", "拟招人数", "政治",
