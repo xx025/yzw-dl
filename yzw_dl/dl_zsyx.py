@@ -7,6 +7,7 @@ step1:
 from urllib.parse import urlencode
 
 from requests_enhance import req_bs4soup_by_post
+
 from yzw_dl.utils import parse_query_params
 from .models import zsmlZsyxQuery, dlParams
 from .yzw_default import table_dl, headers
@@ -35,6 +36,12 @@ def _dl_zsyx_one(ssdm='', dwmc='', mldm='', mlmc='', yjxkdm='', zymc='', xxfs=''
     yxxx = []
     for i in text_soup.select('.zsml-list-box table tbody tr'):
         tds = i.select('td')
+
+        if len(tds) == 0:
+            break
+        elif len(tds) == 1 and tds[0].text.index('很抱歉，没有找到您要搜索的数据！') > -1:
+            break
+
         yxxx.append(zsmlZsyxQuery(
             招生单位=tds[0].select_one('form a').text,
             所在地=tds[1].text,
