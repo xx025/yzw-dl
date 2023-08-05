@@ -1,7 +1,8 @@
-# yanx-core
+# yzw-dl
 
 
-这是yanx 的核心库, 用于下载研招网的数据 
+这是[YanX: 研招网专业目录下载工具](https://github.com/xx025/yanx) 的核心库, 用于下载研招网的数据, 如果你只想使用下载工具建议前往[YanX Releases](https://github.com/xx025/yanx/releases/latest) 下载下载使用打包好的GUI 程序
+
 
 ### 作为库安装
 
