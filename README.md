@@ -7,7 +7,7 @@
 ### 作为库安装
 
 ```shell
-pip install --upgrade git+https://github.com/xx025/yanx.git@yzw-dl
+pip install --upgrade git+https://github.com/xx025/yzw-dl.git
 ```
 API示例 [demo.py](api_demo.py)
 
