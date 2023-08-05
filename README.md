@@ -15,7 +15,7 @@ API示例 [demo.py](api_demo.py)
 
 ```shell
 #请使用 windows 系统,cmd 运行
-git clone -b yzw-dl https://github.com/xx025/yanx.git yzw-dl
+git clone -b yzw-dl https://github.com/xx025/yzw-dl.git yzw-dl
 cd yzw-dl
 virtualenv venv #未安装venv: pip install virtualenv
 venv\Scripts\activate.bat # windows system
