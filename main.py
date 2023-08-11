@@ -1,10 +1,8 @@
 import argparse
 import importlib.util
 
-from tqdm import tqdm
-
-from yzw_dl import dl_zsyx, dl_yxzy, dl_ksfw
-from yzw_dl.tools import parse_config, output_jsonfile, output_csvfile
+from yzw_dl.DownTask import DownTask
+from yzw_dl.tools import parse_config
 
 
 # 命令行参数解析
@@ -22,7 +20,6 @@ def parse_command_line_args():
     parser.add_argument('--output_csvfile', help='是否输出到 csv 文件', action='store_true')
     parser.add_argument('--csv_file', help='csv 文件名')
     parser.add_argument('--csv_title', help='csv 标题')
-
     # 更多的参数可在 config.py 中定义
     return parser.parse_args()
 
@@ -51,39 +48,18 @@ def main():
             config_values[key] = value
 
     print('Config Values:', config_values)
-
     param_list = parse_config(config_values)  # 解析后的参数列表
 
-    Dl_Data = {}
-    for param in tqdm(param_list, desc='下载院校信息', unit='item'):
-        for sch in dl_zsyx(**param):
-            Dl_Data[sch.招生单位] = sch.dict()
+    dl_task = DownTask(param_list=param_list)
+    dl_task.run()
 
-    for key, value in tqdm(Dl_Data.items(), desc='下载院校招生专业信息', unit='item'):
-        param = Dl_Data[key]['dl_params']
-        Dl_Data[key]['招生专业'] = {zs.id: zs.dict() for zs in dl_yxzy(**param)}
-
-    for key, value in tqdm(Dl_Data.items(), desc='下载院校专业考试范围', unit='item'):
-        for zyid in Dl_Data[key]['招生专业'].keys():
-            my_dl_ksfw = dl_ksfw(zyid)
-            zsml = my_dl_ksfw['zsml'].dict()  # 在详情页面会有一些更详细的信息
-            ksfw = [ks_.dict() for ks_ in my_dl_ksfw['ksfw']]  # 考试科目范围
-            dict1 = Dl_Data[key]['招生专业'][zyid]
-            dict1.update(zsml)  # 更新招生专业信息
-            dict1['考试范围'] = ksfw  # 添加考试科目范围
-            Dl_Data[key]['招生专业'][zyid] = dict1  # 更新招生专业信息
-
-    if config_values['output_jsonfile']:
-        # json 格式保存下载的信息
-        print('保存到文件：', config_values['json_file'])
-        output_jsonfile(data=Dl_Data, file_name=config_values['json_file'])
-
-    if config_values['output_csvfile']:
-        # csv 格式保存下载的信息
-        print('保存到文件：', config_values['csv_file'])
-        output_csvfile(data=Dl_Data, file_name=config_values['csv_file'], title=config_values['csv_title'])
-
-    # csv 格式保存下载的信息
+    while True:
+        dl_progress = dl_task.get_dl_progress()
+        if dl_progress['finished']:
+            print('下载完成', dl_progress)
+            print('结束下载')
+            dl_task.stop()
+            break
 
 
 if __name__ == '__main__':
