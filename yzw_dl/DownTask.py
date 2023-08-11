@@ -40,10 +40,12 @@ class DownTask(threading.Thread):
     def get_dl_progress(self):
         # 获取下载进度
         return {
-            '院校信息': int(self.dl_progress['院校信息'] / len(self.param_list) * 100),
-            '专业信息': int(self.dl_progress['专业信息'] / len(self.dl_data) * 100) if len(self.dl_data) else 0,
-            '考试信息': int(self.dl_progress['考试信息'] / len(self.dl_data) * 100) if len(self.dl_data) else 0,
-            'dl_finish': self.dl_progress['dl_finish'],
+            "progress": {
+                '院校信息': self.dl_progress['院校信息'] / len(self.param_list),
+                '专业信息': self.dl_progress['专业信息'] / len(self.dl_data) if len(self.dl_data) else 0,
+                '考试信息': self.dl_progress['考试信息'] / len(self.dl_data) if len(self.dl_data) else 0,
+            },
+            'finished': self.dl_progress['dl_finish'],
         }
 
     def _update_dl_progress(self, key):
