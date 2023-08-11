@@ -38,7 +38,8 @@ class DownTask(threading.Thread):
 
     def get_dl_progress(self):
         # 获取下载进度
-        return {
+
+        re_dic = {
             "progress": {
                 '院校信息': self.dl_progress['院校信息'] / len(self.param_list),
                 '专业信息': self.dl_progress['专业信息'] / len(self.dl_data) if len(self.dl_data) else 0,
@@ -46,6 +47,10 @@ class DownTask(threading.Thread):
             },
             'finished': self.dl_progress['dl_finish'],
         }
+
+        for _ in re_dic.get("progress").keys():
+            re_dic['progress'][_] *= 100
+        return re_dic
 
     def _update_dl_progress(self, key):
         # 更新下载进度
