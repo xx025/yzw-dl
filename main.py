@@ -1,5 +1,6 @@
 import argparse
 import importlib.util
+from time import sleep
 
 from yzw_dl.DownTask import DownTask
 from yzw_dl.tools import parse_config
@@ -51,15 +52,19 @@ def main():
     param_list = parse_config(config_values)  # 解析后的参数列表
 
     dl_task = DownTask(param_list=param_list)
-    dl_task.run()
+    dl_task.start()
 
     while True:
+        sleep(10)
         dl_progress = dl_task.get_dl_progress()
-        if dl_progress['finished']:
+        if dl_progress['dl_finish']:
             print('下载完成', dl_progress)
             print('结束下载')
             dl_task.stop()
             break
+        else:
+            print('下载进度', dl_progress)
+
 
 
 if __name__ == '__main__':
