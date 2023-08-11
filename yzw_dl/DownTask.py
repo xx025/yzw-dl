@@ -24,7 +24,6 @@ class DownTask(threading.Thread):
         self.param_list = param_list
         self.save_json_file = save_json_file
         self.save_csv_file = save_csv_file
-        self.save_csv_title = save_csv_file[2]
 
         self.dl_data = {}  # 下载的数据
 
@@ -95,7 +94,7 @@ class DownTask(threading.Thread):
         if self.save_csv_file[0]:
             # csv 格式保存下载的信息
             print('保存到文件：', self.save_csv_file[1])
-            output_csvfile(data=_dl_data, file_name=self.save_csv_file[1], title=self.save_csv_title)
+            output_csvfile(data=_dl_data, file_name=self.save_csv_file[1], title=self.save_csv_file[2])
 
         # 进入循环，等待停止信号
         while not self._stop_event.is_set():
