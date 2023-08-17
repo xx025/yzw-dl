@@ -1,8 +1,6 @@
 import argparse
 import importlib.util
 from time import sleep
-import time
-import progressbar
 
 from yzw_dl.DownTask import DownTask
 from yzw_dl.tools import parse_config
@@ -11,13 +9,14 @@ from yzw_dl.tools import parse_config
 # 命令行参数解析
 def parse_command_line_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mldm', help='门类代码')
-    parser.add_argument('--yjxkdm', help='一级学科代码')
+    parser.add_argument('--mldm', help='门类代码', default='zyxw')
+    parser.add_argument('--yjxkdm', help='一级学科代码', default='0251')
     parser.add_argument('--xxfs', help='学习方式')
     parser.add_argument('--ssdm', help='省市代码')
     parser.add_argument('--dwmc', help='单位名称')
     parser.add_argument('--zymc', help='专业名称')
     parser.add_argument('--abloc', help='A区或B区')
+    # parser.add_argument('--yxjh', help='院校计划，in [211,981,11,100]，211、985、双一流,普通院校')
     parser.add_argument('--output_jsonfile', help='是否输出到 json 文件', action='store_true')
     parser.add_argument('--json_file', help='json 文件名')
     parser.add_argument('--output_csvfile', help='是否输出到 csv 文件', action='store_true')
