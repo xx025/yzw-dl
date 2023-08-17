@@ -18,13 +18,13 @@ class zsmlZsyx(BaseModel):
 
 
 class dlParams(BaseModel):
-    ssdm = ''
-    dwmc = ''
-    mldm = ''
-    mlmc = ''
-    yjxkdm = ''
-    xxfs = ''
-    zymc = ''
+    ssdm: str = ''
+    dwmc: str = ''
+    mldm: str = ''
+    mlmc: str = ''
+    yjxkdm: str = ''
+    xxfs: str = ''
+    zymc: str = ''
 
 
 class zsmlZsyxQuery(zsmlZsyx):
