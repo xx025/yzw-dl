@@ -1,6 +1,6 @@
 import csv
 import json
-
+import os
 
 def parse_config(config_values: dict):
     # 解析参数
@@ -91,7 +91,12 @@ def csv_data_output(csv_data: list, csv_path: str, csv_title: list = None):
         # 如果没有指定 title，则使用默认值
         csv_title = ["id", "招生单位", "所在地", "院系所", "专业", '学习方式', "研究方向", "拟招人数", "政治",
                      "外语", "业务课一", "业务课二", "考试方式", "指导老师", '备注']
+    # 获取 csv_path 父路径
 
+    csv_dir = os.path.dirname(csv_path)
+    if not os.path.exists(csv_dir):
+        # 如果目录不存在，则创建目录
+        os.makedirs(csv_dir)
     with open(csv_path, 'w', encoding='utf-8-sig', newline='') as f:
         writer = csv.DictWriter(f, csv_title)
         writer.writeheader()
