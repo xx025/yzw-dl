@@ -12,9 +12,9 @@ class zsmlResult(BaseModel):
 class zsmlZsyx(BaseModel):
     招生单位: str
     所在地: str
-    研究生院: str
-    自划线院校: str
-    博士点: str
+    研究生院: bool
+    自划线院校: bool
+    博士点: bool
 
 
 class dlParams(BaseModel):
